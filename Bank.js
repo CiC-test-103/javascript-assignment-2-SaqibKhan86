@@ -7,7 +7,13 @@ class Bank {
 
     // Add methods here:
     // Example: createAccount(name, initialDeposit)
-
+    createAccount(name,initialDeposit){
+        const account = new Account(name, initialDeposit)
+         console.log(account)
+        this.accounts.push(account)
+        return account
+     }
+ 
 }
 
 // Account Class: Represents a single user's account
@@ -21,16 +27,39 @@ class Account {
     // Add methods here:
     // Example: deposit(amount) 
     // example data to be stored in transactionHistory { transactionType: 'Deposit', amount: 500 }
-
+    deposit (amount) {
+        this.balance += amount
+        let transactionDeposit = {transactionType: 'Deposit', amount}
+        this.transactionHistory.push(transactionDeposit)
+    }
     // Example: withdraw(amount)
     // example data to be stored in transactionHistory { transactionType: 'Withdrawal', amount: 200 }
-
+    withdraw(amount){
+        if (amount > this.balance){
+            console.log(`Insufficient Funds...`)
+        } else {
+        this.balance -= amount
+        console.log(`Withdrawed: ${amount}. New Balance: ${this.balance}`)
+        let transactionWithdrawal = { transactionType: 'Withdrawal', amount}
+        this.transactionHistory.push(transactionWithdrawal)
+        }
+    }
     // Example: transfer(amount, recipientAccount)
     // example data to be stored in transactionHistory:
     // for account sending { transactionType: 'Transfer', amount: 300, to: recipientName }
     // for account recieving { transactionType: 'Received', amount: 300, from: senderName }
-    
+    transfer(amount, recipientAccount){
+        let accountSending = { transactionType: 'Transfer', amount, to: recipientAccount.name }
+        this.transactionHistory.push(accountSending)
+        this.balance -= amount
+        let accountRecieving = { transactionType: 'Received', amount, from: this.name }
+        recipientAccount.transactionHistory.push(accountRecieving)
+        recipientAccount.balance += amount
+    }
     // Example: checkBalance()
+    checkBalance(){
+        return this.balance
+    }
 }
 
 //<-------------------------------DO NOT WRITE BELOW THIS LINE------------------------------>
